@@ -1,5 +1,5 @@
 /* 로엘 법무법인 이혼 랜딩 — 방문 기록 + 상담 신청 전송
- * 구조는 지노블 파티 랜딩(gnoble-track.js)과 같다. 기록은 구글 Apps Script 「수집」 웹앱으로만 간다.
+ * 기록은 ENDPOINT 한 곳(예: 구글 Apps Script 웹앱)으로만 간다. 받는 쪽 예시는 업체전달 묶음의 _공통/접수_AppsScript_예시.gs 참고.
  * 방문 기록에는 IP·이름·연락처를 남기지 않는다. 날짜·경로·광고 이름·기기만 남긴다.
  */
 (function () {
@@ -51,7 +51,7 @@
 
   function payload(type, extra) {
     var t = (type === 'apply' || (extra && /클릭/.test(extra.stage || ''))) ? credit : touch;
-    var p = { type: type, vid: vid, page: location.pathname, ch: t.ch, src: t.src, camp: t.camp, cont: t.cont, term: t.term, ref: refHost, dev: dev };
+    var p = { type: type, vid: vid, site: location.hostname, page: location.pathname, ch: t.ch, src: t.src, camp: t.camp, cont: t.cont, term: t.term, ref: refHost, dev: dev };
     for (var k in extra) p[k] = extra[k];
     return JSON.stringify(p);
   }
@@ -81,8 +81,9 @@
   once('rl_visit', function () { send('visit'); });
 
   // 전화·카카오 버튼 누름 → 「방문」 탭에 「전화 클릭」/「카카오 클릭」 + 버튼 자리. 같은 자리 10초 안 재클릭은 한 번만
-  var SPOTS = [['#call-bar', '하단 고정 바'], ['.form-done', '신청 완료 화면'], ['#hero', '첫 화면'], ['#consult', '상담 신청 영역'],
-    ['#faq', '자주 묻는 질문'], ['#terms', '동의 전문'], ['footer', '푸터'], ['header', '상단'], ['#quick-side', '오른쪽 빠른 메뉴']];
+  var SPOTS = [['#fixbar', '하단 고정 바(PC)'], ['#m-quick', '하단 메뉴(휴대폰)'], ['#quick-side', '오른쪽 빠른 메뉴'], ['#gnb', '전체 메뉴'],
+    ['.form-done', '신청 완료 화면'], ['#hero', '첫 화면'], ['#consult', '상담 신청 영역'], ['#faq', '자주 묻는 질문'],
+    ['#terms', '동의 전문'], ['footer', '푸터'], ['#hd', '상단 전화 버튼']];
   var lastTap = {};
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="pf.kakao.com"]');
