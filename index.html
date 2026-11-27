@@ -126,11 +126,15 @@
     #hd.solid .hd-nav{color:var(--ink)}
     .hd-nav a:hover{color:var(--blue-l)}
     #hd.solid .hd-nav a:hover{color:var(--blue)}
-    .hd-call{display:flex;flex-direction:column;align-items:flex-end;line-height:1.15;color:#fff}
-    .hd-call span{font-size:14px;font-weight:500;opacity:.85}
-    .hd-call strong{font-size:28px;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-    #hd.solid .hd-call{color:var(--blue)}
-    #hd.solid .hd-call span{color:var(--mute);opacity:1}
+    /* 머리글 전화 버튼 : 번호 대신 전화 모양으로 누르게 한다 */
+    .hd-call{display:inline-flex;align-items:center;gap:10px;flex:none;height:54px;padding:0 24px 0 8px;border-radius:200px;background:var(--blue);color:#fff;font-size:17px;font-weight:700;letter-spacing:-.02em;box-shadow:0 10px 24px -12px rgba(0,0,0,.55);transition:background-color .2s,transform .2s}
+    .hd-call:hover{background:var(--blue-d);transform:translateY(-1px)}
+    .hd-call i{position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;color:var(--blue)}
+    .hd-call i::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid rgba(255,255,255,.75);animation:hdRing 1.8s ease-out infinite}
+    .hd-call svg{width:20px;height:20px;animation:hdShake 2.6s ease-in-out infinite}
+    @keyframes hdRing{0%{transform:scale(.85);opacity:1}100%{transform:scale(1.5);opacity:0}}
+    @keyframes hdShake{0%,58%,100%{transform:rotate(0)}62%{transform:rotate(-14deg)}66%{transform:rotate(12deg)}70%{transform:rotate(-10deg)}74%{transform:rotate(8deg)}78%{transform:rotate(0)}}
+    @media (prefers-reduced-motion:reduce){.hd-call i::after,.hd-call svg{animation:none}}
     .hd-nav a{position:relative;padding:6px 0}
     .hd-nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:currentColor;transform:scaleX(0);transition:transform .2s}
     .hd-nav a.on::after{transform:scaleX(1)}
@@ -553,8 +557,10 @@
       body{font-size:16px}
       .hd{height:66px}
       .hd-logo,.hd-logo img{width:136px}
+      .hd-call{width:46px;height:46px;padding:0;gap:0;justify-content:center}
       .hd-call span{display:none}
-      .hd-call strong{font-size:21px}
+      .hd-call i{width:46px;height:46px;background:none;color:#fff}
+      .hd-call svg{width:22px;height:22px}
       .hd{gap:10px}
       .gnb-top{height:66px}.gnb-top img{width:136px}
       .gnb li a{font-size:19px;padding:14px 0}
@@ -626,7 +632,7 @@
     <nav class="hd-nav" aria-label="페이지 안 이동">
       <a href="#about">로엘 소개</a><a href="#cases">수행 사례</a><a href="#lawyers">구성원 소개</a><a href="#process">대응 절차</a><a href="#faq">자주 묻는 질문</a><a href="#offices">오시는 길</a>
     </nav>
-    <a class="hd-call" href="tel:1600-6865"><span>24시간 상담</span><strong>1600-6865</strong></a>
+    <a class="hd-call" href="tel:1600-6865" aria-label="24시간 전화상담 1600-6865"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></i><span>전화상담</span></a>
     <button class="hd-menu" type="button" aria-label="전체 메뉴 열기" aria-expanded="false" aria-controls="gnb"><i></i><i></i><i></i></button>
   </div>
 </header>
